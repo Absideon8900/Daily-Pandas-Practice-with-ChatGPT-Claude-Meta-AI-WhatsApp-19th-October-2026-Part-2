@@ -39,3 +39,22 @@ risk_lookup = {
     "L": "Low"
 }
 ```
+<b>Step 2: Your 7 tasks</b></br>
+
+<b>Challenge tracker</b></br>
+<ul>
+    <li><b>Create a working copy</b></li>
+    Create <code>working_df = df.copy()</code>. Keep the original <code>df</code> unchanged.
+    <li><b>Remove duplicate stations</b></li>
+    Create a duplicate-free Dataframe using <code>drop_duplicates()</code>. Keep the first occurrence of each <code>site_id</code>.
+    <li><b>Fill missing values</b></li>
+    Use <code>combine_first()</code> to fill the missing rainfall and NDVI values from <code>backup_df</code>. Merge the backup data first using <code>site_id</code>.
+    <li><b>Create final columns</b></li>
+    Create <code>rainfall_final</code> and <code>ndvi_final</code>, giving priority to the main dataset's value and using the backup values only where the main values are missing.
+    <li><b>Use map()</b></li>
+    Create a <code>risk_lable</code> column by mapping <code>risk_code</code> through <code>risk_lookup</code>. Think about what happens to an unmapped code.
+    <li><b>Use replace()</b></li>
+    Create a separate column named <code>landuse_clean</code> where <code>Forest</code> becomes <code>Forest_Area</code> and <code>Urban</code> becomes  <code>Built-up</code>. Leave other land-use categories unchanged.
+    <li><b>Filter the cleaned data</b></li>
+    Create <code>high_risk_sites</code> containing rows where <code>risk_label</code> is <code>high</code> AND <code>rainfall_high</code> is at least 500. Use the clean dataset.
+</ul>
