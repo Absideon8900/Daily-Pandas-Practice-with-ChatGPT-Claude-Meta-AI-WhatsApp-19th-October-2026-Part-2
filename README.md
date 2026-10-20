@@ -58,3 +58,47 @@ risk_lookup = {
     <li><b>Filter the cleaned data</b></li>
     Create <code>high_risk_sites</code> containing rows where <code>risk_label</code> is <code>high</code> AND <code>rainfall_high</code> is at least 500. Use the clean dataset.
 </ul>
+
+# Solution (Script)
+```Python
+import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    "site_id": [301, 302, 303, 304, 305, 306, 303, 307, 308],
+    "state": ["WB", "WB", "AS", "AS", "OD", "OD", "AS", "WB", "AS"],
+    "landuse": [
+        "Urban", "Forest", "Forest", "Urban", "Agriculture",
+        "Forest", "Forest", "Agriculture", "Urban"
+    ],
+    "rainfall": [420, np.nan, 650, 320, 520, 720, 650, np.nan, 460],
+    "ndvi": [0.28, 0.78, np.nan, 0.32, 0.42, 0.82, np.nan, 0.58, 0.68],
+    "risk_code": ["H", "M", "H", "L", "H", "M", "H", "M", "L"]
+})
+
+backup_df = pd.DataFrame({
+    "site_id": [302, 303, 307, 308],
+    "rainfall_backup": [210, 640, 370, 455],
+    "ndvi_backup": [0.76, 0.87, 0.56, 0.66]
+})
+
+risk_lookup = {
+    "H": "High",
+    "M": "Moderate",
+    "L": "Low"
+}
+working_df = df.copy()
+working_df = working_df.drop_duplicates(subset="site_id")
+working_df = working_df.merge(backup_df,how="left")
+working_df["rainfall_final"] = working_df["rainfall"].combine_first(working_df["rainfall_backup"])
+working_df["ndvi_final"] = working_df["ndvi"].combine_first(working_df["ndvi_backup"])
+working_df["risk_level"] = working_df["risk_code"].replace(risk_lookup)
+working_df["landuse_clean"] = working_df["landuse"].replace({"Forest":"Forest_Area",
+                                                             "Urban":"Built-Up"})
+high_risk_sites = working_df.copy()
+print(working_df)
+print()
+high_risk_sites = high_risk_sites[high_risk_sites["risk_level"] == "High"]
+high_risk_sites = high_risk_sites[high_risk_sites["rainfall_final"] <= 500]
+print(high_risk_sites)
+```
