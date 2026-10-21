@@ -95,10 +95,46 @@ working_df["ndvi_final"] = working_df["ndvi"].combine_first(working_df["ndvi_bac
 working_df["risk_level"] = working_df["risk_code"].replace(risk_lookup)
 working_df["landuse_clean"] = working_df["landuse"].replace({"Forest":"Forest_Area",
                                                              "Urban":"Built-Up"})
+working_df = working_df[["site_id",
+                         "state",
+                         "landuse",
+                         "rainfall_final",
+                         "ndvi_final",
+                         "risk_code","risk_level"]]
 high_risk_sites = working_df.copy()
-print(working_df)
-print()
 high_risk_sites = high_risk_sites[high_risk_sites["risk_level"] == "High"]
 high_risk_sites = high_risk_sites[high_risk_sites["rainfall_final"] <= 500]
+print()
+print("The Output:")
+print()
+print(working_df)
+print()
+print("The Output where the risk level is considered High and the rainfall should be less than or equals to 500")
+print()
 print(high_risk_sites)
+print()
+```
+
+# Solution (Output)
+```Python
+PS C:\Users\hp\Downloads\sql_practice(0)> & C:\Users\hp\AppData\Local\Programs\Python\Python313\python.exe "c:/Users/hp/Downloads/sql_practice(0)/test2.py"
+
+The Output:
+
+   site_id state      landuse  rainfall_final  ndvi_final risk_code risk_level
+0      301    WB        Urban           420.0        0.28         H       High
+1      302    WB       Forest           210.0        0.78         M   Moderate
+2      303    AS       Forest           650.0        0.87         H       High
+3      304    AS        Urban           320.0        0.32         L        Low
+4      305    OD  Agriculture           520.0        0.42         H       High
+5      306    OD       Forest           720.0        0.82         M   Moderate
+6      307    WB  Agriculture           370.0        0.58         M   Moderate
+7      308    AS        Urban           460.0        0.68         L        Low
+
+The Output where the risk level is considered High and the rainfall should be less than or equals to 500
+
+   site_id state landuse  rainfall_final  ndvi_final risk_code risk_level
+0      301    WB   Urban           420.0        0.28         H       High
+
+PS C:\Users\hp\Downloads\sql_practice(0)>
 ```
